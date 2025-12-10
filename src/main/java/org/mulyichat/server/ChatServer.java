@@ -27,7 +27,7 @@ public class ChatServer {
 
     public void connectClients() {
         try {
-            Socket socketClient = serverSocket.accept();
+            Socket socketClient = serverSocket.accept(); // 1 раз можем получить клиента, поэтому снизу зацикливаем
             ClientHandler clientHandler = new ClientHandler(this, socketClient);
             observable.addObserver(clientHandler);
 

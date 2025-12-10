@@ -20,14 +20,13 @@ public class ClientHandler implements Runnable, Observer<Message> {
         this.server = server;
         this.socketClient = socketClient;
         try {
-            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-            out = new PrintWriter(socketClient.getOutputStream(), true);
+            this.in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            this.out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // передать ListenClient...
 
     @Override
     public void run() {
@@ -37,6 +36,7 @@ public class ClientHandler implements Runnable, Observer<Message> {
 
                 sendToEveryone(message);
                 // почему-то рассылается далеко не всем пользователям(((
+                // P.S. исправил
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -44,6 +44,7 @@ public class ClientHandler implements Runnable, Observer<Message> {
 
     }
 
+    // нормально ли то, что я в listener(слушателе) использую метод оповещателя ?
     private void sendToEveryone(Message message) {
         server.getObservable().notifyObservers(message);
     }
